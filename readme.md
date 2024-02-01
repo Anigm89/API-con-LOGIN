@@ -4,7 +4,7 @@ En este ejercicio vamos a trabajar la autenticación y el acceso a la API
 
 Como véis no hay un package.json por tanto tendréis que inicializar NPM e instalar todas las dependencias necesarias para realizar el ejercicio.
 
-Todo lo haremos desde el lado del servidor, en este caso no usaremos el FRONT para consumirlo. Por tanto no deberiáis tener errores de CORS.
+Todo lo haremos desde el lado del servidor, en este caso no usaremos el FRONT para consumirlo. Por tanto no deberiáis tener errores de CORS.usuario
 
 ## ¿Qué vamos a hacer?
 El ejercico consta de 2 partes:
