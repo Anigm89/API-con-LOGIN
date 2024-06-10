@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
-const {generateToken, verifyToken, searchCharacter} = require("../middlewares/middlewares");
+const {generateToken, verifyToken} = require("../middlewares/middlewares");
 const users = require("../data/users");
 
 router.get("/", (req, res) => {
@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
         res.send(`
         <h1>BIENVENIDO</h1>
         <a href="/search">Buscador</a>
+        <a href="/characters">Lista completa de personajes</a>
         <form action="/logout" method="post">
         <button type="submit">Cerrar Sesión</button>
         </form>
@@ -25,6 +26,7 @@ router.get("/", (req, res) => {
 
         <button type="submit">Entrar</button>
         </form>
+
         `)
     }
 });
@@ -40,21 +42,32 @@ router.get("/search", verifyToken, (req, res) => {
       <p>ID: ${user.id}</p>
       <p>UserName: ${user.username}</p>
 
-      
-      <label for="characterName">Introduce el nombre del personaje</label>
-      <input type="text" id="characterName" placeholder="Personaje"/>
-      <button type="button" id="buscar" >Obtener informacion</button></br></br>
-      <div id="container"></div>
+      <form action="/findCharacter" method="post">
+        <label for="characterName">Introduce el nombre del personaje</label>
+        <input type="text" id="characterName"  name="characterName" placeholder="Personaje" required/>
+        <button type="submit" >Obtener información</button>
+      </form>
+      </br></br>
 
+      <a href="/characters">Lista completa de personajes</a> <br>
       <a href="/">HOME</a>
       <form action="/logout" method="post">
       <button type="submit">Cerrar Sesión</button>
-      </form>
+      </form> 
+
       `);
     } else {
       res.status(401).json({ mensaje: 'Usuario no encontrado'});
     }
 });
+
+router.post('/findCharacter', verifyToken, (req, res) =>{
+    const characterName = req.body;
+    const name = JSON.stringify(characterName.characterName)
+    const finallyName = name.replace(/['"]+/g, '');
+    res.redirect(`/character/${finallyName}`)
+ 
+})
 
 router.post("/login", (req, res) => {
     const {username, password} = req.body;
@@ -75,7 +88,7 @@ router.post("/logout", (req, res) => {
 
 const url = `https://rickandmortyapi.com/api/character/`;
 
-router.get("/character", verifyToken, async (req, res) => {
+router.get("/characters", verifyToken, async (req, res) => {
     try {
         const response = await axios.get(url);
         const characters = response.data.results;
@@ -104,6 +117,8 @@ router.get("/character/:name", verifyToken, async (req, res) => {
                     <p>Gender: <span>${gender} </span></p>
                     <p>Origin: <span>${name} </span></p>
                 </div>
+                <a href="/">Return Home</a>
+
                 `
                 }).join('')
                 res.send(template)

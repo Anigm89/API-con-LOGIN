@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const hashedSecret = require("../crypto/crypto");
+const axios = require('axios');
 
 function generateToken(user)  {
     return jwt.sign({user: user.id}, hashedSecret, {expiresIn: "1h"});
@@ -19,38 +20,4 @@ function verifyToken(req, res, next) {
     });
 };
 
-function searchCharacter() {
-    console.log("hola")
-    const characterName = document.getElementById("characterName").value;
-    const result = document.getElementById("container");
-
-    const apiURL = `http://localhost:3000/character/${characterName}`;
-    result.innerHTML = ``;
-
-    fetch(`${apiURL}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data) {
-            data.map(item => {
-
-                let characterName = item.name
-                const {status, species, gender, origin: {name}, image} = item 
-                result.innerHTML += `
-                <div>
-                <img src="${image}" alt="${characterName}"/>
-                <p>Name: ${characterName}</p>
-                <p>Estatus: ${status}</p>
-                <p>Especie: ${species}</p>
-                <p>Genero: ${gender}</p>
-                <p>Origen: ${name}</p>
-                </div>
-                `
-            })
-        }else {
-           result.innerHTML = `<p>Imposible acceder al personaje</p>`
-        }
-    })
-    .catch(error => result.innerHTML = `<p>Imposible acceder al personaje</p>`);
-};
-
-module.exports = {generateToken, verifyToken, searchCharacter};
+module.exports = {generateToken, verifyToken};

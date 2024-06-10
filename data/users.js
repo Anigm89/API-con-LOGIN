@@ -1,7 +1,7 @@
 const users = [
-    { id: 1, username: 'data', password: 'madrid', name: 'Data' },
-    { id: 2, username: 'reyes', password: 'andalucia', name: 'Reyes' },
-    { id: 3, username: 'yolanda', password: 'valencia', name: 'Yolanda' },
-];
-  
-module.exports = users;
+    { id: 1, username: 'user1', password: '1234', name: 'Sheldom' },
+    { id: 2, username: 'user2', password: 'contraseña2', name: 'Leonard' },
+    { id: 3, username: 'user3', password: 'contraseña3', name: 'Penny' }
+  ];
+
+  module.exports = users;
